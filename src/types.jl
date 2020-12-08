@@ -49,8 +49,8 @@ abstract type AbstractEPMat end
 struct EPMat{T<:AbstractFloat} <: AbstractEPMat
     KK::AbstractArray{T,2}
     KKPD::AbstractArray{T,2}
-    invKKPD::Matrix{T}
-    KY::Vector{T}
+    Σ::Matrix{T}
+    αStb::Vector{T}
     v::Vector{T}
     lb::Vector{T}
     ub::Vector{T}

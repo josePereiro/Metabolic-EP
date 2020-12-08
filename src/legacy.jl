@@ -2,7 +2,7 @@
 function eponesweepold!(X::EPFields, epalg::EPAlg, epmat::EPMat)
     @extract X : av va a b μ s  siteflagave siteflagvar
     @extract epalg : beta minvar maxvar epsconv damp
-    @extract epmat : KK KKPD invKKPD nuinf nusup D KY I v
+    @extract epmat : KK KKPD Σ nuinf nusup D αStb I v
 
     T = eltype(v)
     
@@ -11,7 +11,7 @@ function eponesweepold!(X::EPFields, epalg::EPAlg, epmat::EPMat)
     errμ  = typemin(T)
     errs  = typemin(T)
 
-    A_mul_B!(v,invKKPD, (KY + D.*a))
+    A_mul_B!(v,Σ, (αStb + D.*a))
     
     for i in eachindex(I)
         I[i] = min(I[i],b[i])

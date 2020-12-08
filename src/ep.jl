@@ -265,20 +265,20 @@ end
 function eponesweep!(X::EPFields,epalg::EPAlg, epmat::EPMat)
     @extract X : av va a b μ s siteflagave siteflagvar
     @extract epalg : beta minvar maxvar epsconv damp
-    @extract epmat : KK KKPD invKKPD lb ub KY v
+    @extract epmat : KK KKPD Σ lb ub αStb v
 
     for i in eachindex(b)
         KKPD[i,i] = KK[i,i] + 1.0/b[i]
     end
-    inplaceinverse!(invKKPD,KKPD)
+    inplaceinverse!(Σ,KKPD)
 
     minerr = typemin(av[1])
     errav,errva,errμ,errs = minerr,minerr,minerr,minerr
 
-    mul!(v,invKKPD, (KY + a./b))
+    mul!(v,Σ, (αStb + a./b))
 
     for i in eachindex(av)
-        newμ,news = newμs(invKKPD[i,i],a[i],b[i],v[i],lb[i],ub[i],minvar, maxvar)
+        newμ,news = newμs(Σ[i,i],a[i],b[i],v[i],lb[i],ub[i],minvar, maxvar)
         errμ = max(errμ, abs(μ[i]-newμ))
         errs = max(errs, abs(s[i]-news))
         μ[i] = newμ
